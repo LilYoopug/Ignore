@@ -1,0 +1,27 @@
+name: Upload External URL
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag
+        required: true
+        default: v2
+      url:
+        description: Asset URL
+        required: true
+      name:
+        description: Asset filename
+        required: true
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          curl -L -o "$GITHUB_WORKSPACE/${{ inputs.name }}" "${{ inputs.url }}"
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag }}
+          files: ${{ inputs.name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
