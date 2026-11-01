@@ -12,6 +12,8 @@ on:
       name:
         description: Asset filename
         required: true
+permissions:
+  contents: write
 jobs:
   upload:
     runs-on: ubuntu-latest
